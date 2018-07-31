@@ -2,8 +2,8 @@ from gettext import gettext as _
 
 from django.db import transaction
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import mixins, serializers, status
 from rest_framework.decorators import detail_route
-from rest_framework import serializers, status
 from rest_framework.response import Response
 
 from pulpcore.plugin.models import Artifact
@@ -14,11 +14,12 @@ from pulpcore.plugin.serializers import (
 )
 from pulpcore.plugin.tasking import enqueue_with_reservation
 from pulpcore.plugin.viewsets import (
-    ContentViewSet,
+    BaseFilterSet,
+    NamedModelViewSet,
     RemoteViewSet,
     OperationPostponedResponse,
     PublisherViewSet,
-    BaseFilterSet)
+)
 
 from . import tasks
 from .models import FileContent, FileRemote, FilePublisher
@@ -38,12 +39,15 @@ class FileContentFilter(BaseFilterSet):
         ]
 
 
-class FileContentViewSet(ContentViewSet):
+class FileContentViewSet(NamedModelViewSet,
+                         mixins.CreateModelMixin,
+                         mixins.RetrieveModelMixin,
+                         mixins.ListModelMixin):
     """
     ViewSet for FileContent.
     """
 
-    endpoint_name = 'file/files'
+    endpoint_name = 'filecontent'
     queryset = FileContent.objects.all()
     serializer_class = FileContentSerializer
     filterset_class = FileContentFilter

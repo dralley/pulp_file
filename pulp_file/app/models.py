@@ -19,9 +19,6 @@ class FileContent(Content):
         relative_path (str): The file relative path.
         digest (str): The SHA256 HEX digest.
     """
-
-    TYPE = 'file'
-
     relative_path = models.TextField(null=False)
     digest = models.TextField(null=False)
 
