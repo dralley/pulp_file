@@ -15,6 +15,7 @@ from pulpcore.plugin.serializers import (
 from pulpcore.plugin.tasking import enqueue_with_reservation
 from pulpcore.plugin.viewsets import (
     BaseFilterSet,
+    ContentRepositoryVersionFilter,
     NamedModelViewSet,
     RemoteViewSet,
     OperationPostponedResponse,
@@ -30,12 +31,14 @@ class FileContentFilter(BaseFilterSet):
     """
     FilterSet for FileContent.
     """
+    repository_version = ContentRepositoryVersionFilter()
 
     class Meta:
         model = FileContent
         fields = [
             'relative_path',
-            'digest'
+            'digest',
+            'repository_version'
         ]
 
 
@@ -87,7 +90,7 @@ class FileRemoteViewSet(RemoteViewSet):
     @detail_route(methods=('post',), serializer_class=RepositorySyncURLSerializer)
     def sync(self, request, pk):
         """
-        Synchronizes a repository.
+        Synchronizes a retory.
 
         The ``repository`` field has to be provided.
         """
