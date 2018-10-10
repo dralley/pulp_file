@@ -15,9 +15,7 @@ from pulpcore.plugin.serializers import (
 from pulpcore.plugin.tasking import enqueue_with_reservation
 from pulpcore.plugin.viewsets import (
     BaseFilterSet,
-    ContentRepositoryVersionFilter,
-    ContentAddedRepositoryVersionFilter,
-    ContentRemovedRepositoryVersionFilter,
+    BaseContentFilterSet,
     NamedModelViewSet,
     RemoteViewSet,
     OperationPostponedResponse,
@@ -29,22 +27,16 @@ from .models import FileContent, FileRemote, FilePublisher
 from .serializers import FileContentSerializer, FileRemoteSerializer, FilePublisherSerializer
 
 
-class FileContentFilter(BaseFilterSet):
+class FileContentFilter(BaseContentFilterSet):
     """
     FilterSet for FileContent.
     """
-    repository_version = ContentRepositoryVersionFilter()
-    repository_version_added = ContentAddedRepositoryVersionFilter()
-    repository_version_removed = ContentRemovedRepositoryVersionFilter()
 
     class Meta:
         model = FileContent
         fields = [
             'relative_path',
             'digest',
-            'repository_version',
-            'repository_version_added',
-            'repository_version_removed',
         ]
 
 
