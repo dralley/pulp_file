@@ -14,7 +14,6 @@ from pulpcore.plugin.serializers import (
 )
 from pulpcore.plugin.tasking import enqueue_with_reservation
 from pulpcore.plugin.viewsets import (
-    BaseFilterSet,
     BaseContentFilterSet,
     NamedModelViewSet,
     RemoteViewSet,
