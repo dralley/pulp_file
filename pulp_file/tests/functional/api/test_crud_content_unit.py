@@ -10,7 +10,6 @@ from pulp_smash.pulp3.constants import ARTIFACTS_PATH, REPO_PATH
 from pulp_smash.pulp3.utils import (
     delete_orphans,
     gen_repo,
-    get_content,
     sync,
 )
 
@@ -22,6 +21,7 @@ from pulp_file.tests.functional.constants import (
 from pulp_file.tests.functional.utils import (
     gen_file_remote,
     gen_file_content_attrs,
+    get_file_content,
     skip_if,
 )
 from pulp_file.tests.functional.utils import set_up_module as setUpModule  # noqa:F401
@@ -132,7 +132,7 @@ class DeleteContentUnitRepoVersionTestCase(unittest.TestCase):
         sync(cfg, remote, repo)
 
         repo = client.get(repo['_href'])
-        content = get_content(repo)
+        content = get_file_content(repo)
         with self.assertRaises(HTTPError):
             client.delete(choice(content)['_href'])
-        self.assertEqual(len(content), len(get_content(repo)))
+        self.assertEqual(len(content), len(get_file_content(repo)))
