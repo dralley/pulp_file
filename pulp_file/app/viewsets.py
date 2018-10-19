@@ -87,7 +87,7 @@ class FileRemoteViewSet(RemoteViewSet):
     @detail_route(methods=('post',), serializer_class=RepositorySyncURLSerializer)
     def sync(self, request, pk):
         """
-        Synchronizes a retory.
+        Synchronizes a repository.
 
         The ``repository`` field has to be provided.
         """
