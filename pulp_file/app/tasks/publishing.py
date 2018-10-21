@@ -69,15 +69,17 @@ def populate(publication):
             _artifact = RemoteArtifact.objects.filter(content_artifact=content_artifact).first()
         return _artifact
     paths = set()
-    for content in FileContent.objects.filter(
-            pk__in=publication.repository_version.content).order_by('-created'):
-        if content.relative_path in paths:
+    for content_qs in publication.repository_version.content:
+        if not isinstance(list(content_qs)[0], FileContent):
             continue
-        paths.add(content.relative_path)
-        for content_artifact in content.contentartifact_set.all():
-            artifact = find_artifact()
-            entry = Entry(
-                relative_path=content_artifact.relative_path,
-                digest=artifact.sha256,
-                size=artifact.size)
-            yield entry
+        for content in FileContent.objects.filter(pk__in=content_qs).order_by('-created'):
+            if content.relative_path in paths:
+                continue
+            paths.add(content.relative_path)
+            for content_artifact in content.contentartifact_set.all():
+                artifact = find_artifact()
+                entry = Entry(
+                    relative_path=content_artifact.relative_path,
+                    digest=artifact.sha256,
+                    size=artifact.size)
+                yield entry
