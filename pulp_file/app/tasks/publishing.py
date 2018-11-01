@@ -69,8 +69,8 @@ def populate(publication):
             _artifact = RemoteArtifact.objects.filter(content_artifact=content_artifact).first()
         return _artifact
     paths = set()
-    for content_qs in publication.repository_version.content:
-        if not isinstance(list(content_qs)[0], FileContent):
+    for ctype, content_qs in publication.repository_version.content().items():
+        if not isinstance(ctype.model_class(), FileContent):
             continue
         for content in FileContent.objects.filter(pk__in=content_qs).order_by('-created'):
             if content.relative_path in paths:
